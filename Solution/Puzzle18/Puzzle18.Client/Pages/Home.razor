@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject HttpClient httpClient
+
+<PageTitle>Home</PageTitle>
+
+<h1>@welcomeMessage</h1>
+
+<p>
+    This is a Blazor Web App running on .NET 8 with the Interactive render mode set to "WebAssembly" and the Interactivity location set to "Global".
+</p>
+
+<p>
+    A WelcomeMessage value is set in appsettings.json on the server.
+</p>
+
+<p>
+    How can we simply show it here in a Razor page?
+</p>
+
+
+@code {
+
+    string welcomeMessage = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            welcomeMessage = await httpClient.GetStringAsync("config");
+            StateHasChanged();
+        }
+    }
+}
